@@ -9,7 +9,7 @@ let g:colors_name = "stb"
 
 hi Normal	guifg=black	guibg=white
 hi NonText	guifg=black
-hi comment	guifg=#d2b550
+hi comment	guifg=#00af00
 hi constant	guifg=black
 hi identifier	guifg=black
 hi statement	guifg=black
