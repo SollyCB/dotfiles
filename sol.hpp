@@ -54,7 +54,7 @@ void sort_high_low(int *array, int start, int end) {
                 tmp = array[i];
                 x++;
                 array[i] = array[x];
-                array[x] = array[i];
+                array[x] = tmp;
             }
         }
         x++;
@@ -74,7 +74,7 @@ void sort_low_high(int *array, int start, int end) {
                 tmp = array[i];
                 x++;
                 array[i] = array[x];
-                array[x] = array[i];
+                array[x] = tmp;
             }
         }
         x++;
@@ -677,7 +677,7 @@ inline static String string_buffer_get_string(String_Buffer *buf, const char *cs
     return ret;
 }
 
-// SIMD
+// SIMD -- @Todo @Note find_flags + update flags function are out of date, having an overlap bug
 inline static u32 simd_find_update_flags_u8(u32 count, u8 *flags, u8 find, u8 negate, u8 set, u8 clear, u32 *indices) {
     __m128i a;
     __m128i b = _mm_set1_epi8(find | negate);
@@ -740,7 +740,41 @@ inline static u32 simd_find_flags_u8(u32 count, u8 *flags, u8 find, u8 negate, u
     return cnt;
 }
 
+    /* File */
+const u8* file_read_char(const char *file_name, u64 *size);
+
 #ifdef SOL_HPP_IMPLEMENTATION
+
+    /* File Impl */
+const u8* file_read_char(const char *file_name, u64 *size) {
+    FILE *file = fopen(file_name, "r");
+
+    if (!file) {
+        println("FAILED TO READ FILE %c", file_name);
+        return nullptr;
+    }
+
+    fseek(file, 0, SEEK_END);
+    *size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    void *contents = malloc_h(*size, 8); // 8 byte aligned as contents of file may need to be aligned
+
+    // idk if it is worth checking the returned size? It seems to be wrong on windows
+    //fread(contents, 1, *size, file);
+    size_t read = fread(contents, 1, *size, file);
+
+    if (*size != read) {
+        println("Failed to read entire file, %c", file_name);
+        println("    File Size: %u, Size Read: %u", *size, read);
+    }
+
+    //ASSERT(read == *byte_count, "Failed to read entire file: read = %i, file_len = %i", read, *byte_count);
+    fclose(file);
+
+    return (u8*)contents;
+}
+
 
 #endif // implementation guard
 #endif // include guard
