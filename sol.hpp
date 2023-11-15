@@ -11,13 +11,13 @@
 
 #include <immintrin.h>
 
-#include <cstring>
-#include <cstdint>
+#include <string.h>
+#include <stdint.h>
 #include <stdio.h> // @Todo implement my own streaming to stdout and get rid of printf
-#include <iostream> // see ASSERT() macro
 #include <string.h>
 #include <assert.h> // @Todo get rid of this asserting
-#include <cstdarg>
+#include <stdarg.h>
+#include <stdbool.h>
 
 // type defs/convenience size defines
 typedef unsigned int uint;
@@ -85,7 +85,30 @@ void sort_low_high(int *array, int start, int end) {
         sort_low_high(array, x + 1, end);
     }
 }
-
+inline static u8* get_seq8(u32 len, bool reversed) {
+    u8 *ret = (u8*)malloc(sizeof(u8) * len);
+    for(u8 i = 0; i < len; ++i)
+        ret[i] = reversed ? (len-1) - i : i;
+    return ret;
+}
+inline static u16* get_seq16(u32 len, bool reversed) {
+    u16 *ret = (u16*)malloc(sizeof(u16) * len);
+    for(u16 i = 0; i < len; ++i)
+        ret[i] = reversed ? (len-1) - i : i;
+    return ret;
+}
+inline static u32* get_seq32(u32 len, bool reversed) {
+    u32 *ret = (u32*)malloc(sizeof(u32) * len);
+    for(u32 i = 0; i < len; ++i)
+        ret[i] = reversed ? (len-1) - i : i;
+    return ret;
+}
+inline static u64* get_seq64(u32 len, bool reversed) {
+    u64 *ret = (u64*)malloc(sizeof(u64) * len);
+    for(u64 i = 0; i < len; ++i)
+        ret[i] = reversed ? (len-1) - i : i;
+    return ret;
+}
     /* print */
 static const u64 PRINT_FORMATTER_BUF_LEN = 1024;
 
@@ -508,10 +531,6 @@ static void dbg_println(const char* str, ...) {
         << __LINE__ << ": " << #predicate << ", " << fmt << '\n'; \
         HALT_EXECUTION(); \
     }
-    //#define ASSERT(predicate, fmt) if (!(predicate)) { \
-        //println("Assert Failed in %c, %c(..), Line %c: %c, %c", __FILE__, __FUNCTION__, __LINE__, #predicate, fmt); \
-        //HALT_EXECUTION(); \
-    //}
 #else
     #define ASSERT(predicate, fmt, ...) {}
 #endif
@@ -622,10 +641,10 @@ inline float acosf(float x) {
 #endif // WIN32 or not
 
     /* string */
-struct String {
+typedef struct String {
     u32 len;
     const char *str;
-};
+} String;
 inline static String cstr_to_string(const char *cstr) {
     String string;
     string.str = cstr;
@@ -633,12 +652,12 @@ inline static String cstr_to_string(const char *cstr) {
     return string;
 }
 
-struct String_Buffer {
+typedef struct String_Buffer {
     char *buf;
     u32 len;
     u32 cap;
-};
-inline static String_Buffer create_string_buffer(u32 size, bool temp = false) {
+} String_Buffer;
+inline static String_Buffer create_string_buffer(u32 size, bool temp) {
     String_Buffer ret;
     ret.len = 0;
     size = align(size, 16); // Just in case of some simd
@@ -651,7 +670,6 @@ inline static String_Buffer create_string_buffer(u32 size, bool temp = false) {
 }
 inline static void destroy_string_buffer(String_Buffer *buf) {
     free_h(buf->buf);
-    *buf = {};
 }
 inline static String string_buffer_get_string(String_Buffer *buf, String *str) {
     String ret = {};
@@ -659,20 +677,20 @@ inline static String string_buffer_get_string(String_Buffer *buf, String *str) {
     ret.str = (const char*)(buf->buf + buf->len);
 
     buf->len += ret.len + 1; // +1 for null byte
-    ASSERT(buf->len <= buf->cap, "String Buffer Overflow");
+    assert(buf->len <= buf->cap && "String Buffer Overflow");
     memcpy((char*)ret.str, str->str, ret.len); // copy null byte
     char *tmp = (char*)ret.str;
     tmp[ret.len] = '\0';
 
     return ret;
 }
-inline static String string_buffer_get_string(String_Buffer *buf, const char *cstr) {
+inline static String string_buffer_string_from_cstr(String_Buffer *buf, const char *cstr) {
     String ret = {};
     ret.len = strlen(cstr);
     ret.str = (const char*)(buf->buf + buf->len);
 
     buf->len += ret.len + 1; // +1 for null byte
-    ASSERT(buf->len <= buf->cap, "String Buffer Overflow");
+    assert(buf->len <= buf->cap && "String Buffer Overflow");
     memcpy((char*)ret.str, cstr, ret.len + 1); // copy null byte
 
     return ret;
@@ -740,7 +758,7 @@ inline static u32 simd_find_flags_u8(u32 count, u8 *flags, u8 find, u8 negate, u
     }
     return cnt;
 }
-static inline int match_int(char c) {
+inline static int match_int(char c) {
     switch(c) {
     case '0':
         return 0;
@@ -763,11 +781,10 @@ static inline int match_int(char c) {
     case '9':
         return 9;
     default:
-        //ASSERT(false && "not an int", "");
         return -1;
     }
 }
-inline int ascii_to_int(const char *data, u64 *offset) {
+inline static int ascii_to_int(const char *data, u64 *offset) {
     u64 inc = 0;
     while(match_int(data[inc]) == -1)
         inc++;
@@ -781,7 +798,7 @@ inline int ascii_to_int(const char *data, u64 *offset) {
     *offset += inc;
     return accum;
 }
-inline u64 ascii_to_u64(const char *data, u64 *offset) {
+inline static u64 ascii_to_u64(const char *data, u64 *offset) {
     u64 inc = 0;
     while(match_int(data[inc]) == -1)
         inc++;
@@ -825,12 +842,10 @@ const u8* file_read_char(const char *file_name, u64 *size) {
         println("    File Size: %u, Size Read: %u", *size, read);
     }
 
-    //ASSERT(read == *byte_count, "Failed to read entire file: read = %i, file_len = %i", read, *byte_count);
     fclose(file);
 
     return (u8*)contents;
 }
-
 
 #endif // implementation guard
 #endif // include guard
