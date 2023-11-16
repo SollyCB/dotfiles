@@ -640,6 +640,41 @@ inline float acosf(float x) {
 }
 #endif // WIN32 or not
 
+extern "C" {
+    /* C Dyn Array */
+inline static void* fn_new_array(int cap, int width) {
+    printf("cap * width = %u\n", width * cap + 16);
+    int *ret = malloc(cap * width + 16);
+    ret[0] = width * cap;
+    ret[1] = 0;
+    ret[2] = width;
+    ret += 4;
+    return (void*)ret;
+}
+inline static void* fn_realloc_array(int *array) {
+    printf("count * width = %i\n" , array[1] * array[2]);
+    if (array[0] > array[1] * array[2])
+        return array + 4;
+    array = realloc(array, array[0] * 2 + 16);
+    assert(array);
+    array[0] *= 2;
+    printf("reallocd cap = %i\n", array[0]);
+    array += 4;
+    return array;
+}
+
+#define new_array(cap, type) fn_new_array(cap, sizeof(type))
+#define free_array(array) free((int*)array - 4)
+
+#define array_cap(array)   (((int*)array)[-4] / ((int*)array)[-2])
+#define array_count(array) ((int*)array)[-3]
+#define array_inc(array)   ((int*)array)[-3]++
+#define array_dec(array)   ((int*)array)[-3]--
+
+#define array_add(array, elem) array = fn_realloc_array((int*)array - 4); array[array_count(array)] = elem; array_inc(array)
+#define array_pop(array) if (array_count(array) != 0) array_dec(array) else false
+} // extern C
+
     /* string */
 typedef struct String {
     u32 len;
