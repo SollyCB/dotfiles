@@ -1,8 +1,14 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
    Define SOL_H_IMPL for the C source.
    Define SOL_BIT_STUFF for bit manipulation builtins and SIMD functions
    Define SOL_MATH for math builtins
 */
+
+#define DEBUG 1
 
 #ifndef SOL_H_INCLUDE_GUARD_
 #define SOL_H_INCLUDE_GUARD_
@@ -42,9 +48,10 @@ typedef u32 bool32;
 #define Max_s16  INT16_MAX
 #define Max_s8   INT8_MAX
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#define max32_if_true(eval)  (Max_u32 + (u32)((eval) == 0)))
+#define max8_if_true(eval)   (Max_u8  +  (u8)((eval) == 0)))
+#define max32_if_false(eval) (Max_u32 + (u32)((eval) != 0))
+#define max8_if_false(eval)  (Max_u8  +  (u8)((eval) != 0))
 
 #define SOL_ALIGN
 static inline size_t align(size_t size, size_t alignment) {
@@ -71,6 +78,8 @@ static inline size_t align(size_t size, size_t alignment) {
 #endif // if DEBUG
 
                         /* Array */
+#ifndef __cplusplus
+
 #define SOL_ARRAY
 
 // Backend
@@ -110,6 +119,7 @@ inline static void* fn_realloc_array(int *array) {
         array_dec(array) \
     else \
         false
+#endif // ifndef cpp
 
                   /* Sorting */
 void sort_high_low(int *array, int start, int end) {
@@ -374,16 +384,17 @@ inline static String cstr_to_string(const char *cstr) {
 }
 
 typedef struct String_Buffer {
+    int cap;
+    int len;
     char *buf;
-    u32 len;
-    u32 cap;
 } String_Buffer;
-inline static String_Buffer new_string_buffer(u32 size) {
+
+inline static String_Buffer new_string_buffer(int size) {
     String_Buffer ret;
     ret.len = 0;
     size = align(size, 16);
     ret.cap = size;
-    ret.buf = malloc(size);
+    ret.buf = (char*)malloc(size);
     return ret;
 }
 inline static void free_string_buffer(String_Buffer *buf) {
@@ -395,7 +406,7 @@ inline static String string_buffer_get_string(String_Buffer *buf, String *str) {
 
     if (ret.len + 1 + buf->len >= buf->cap) {
         buf->cap *= 2;
-        buf->buf = realloc(buf->buf, buf->cap);
+        buf->buf = (char*)realloc(buf->buf, buf->cap);
     }
 
     ret.str = (const char*)(buf->buf + buf->len);
@@ -414,7 +425,7 @@ inline static String string_buffer_string_from_cstr(String_Buffer *buf, const ch
 
     if (ret.len + 1 + buf->len >= buf->cap) {
         buf->cap *= 2;
-        buf->buf = realloc(buf->buf, buf->cap);
+        buf->buf = (char*)realloc(buf->buf, buf->cap);
     }
 
     ret.str = (const char*)(buf->buf + buf->len);
@@ -491,6 +502,7 @@ inline static u32 simd_find_flags_u8(u32 count, u8 *flags, u8 find, u8 negate, u
 }
 #endif // ifdef SOL_BIT_STUFF
 
+#ifndef __cplusplus
                     /* HashMap */
 #define SOL_HASH_MAP
 /*
@@ -812,6 +824,7 @@ inline static void* fn_hash_map_delete_str(Hash_Map *map, const char* key) {
 #define hash_map_delete(p_map, p_key) fn_hash_map_delete(p_map, sizeof(*(key)), p_key)
 #define hash_map_delete_str(p_map, str_key) fn_hash_map_delete_str(p_map, str_key)
                     /* End Hash Map Header */
+#endif // ifndef cpp
 
 inline static int ascii_to_int(const char *data, u64 *offset) {
     u64 inc = 0;
@@ -847,11 +860,16 @@ inline static char* file_read_char(const char *file_name, u64 *size) {
 
     FILE *f = fopen(file_name, "r");
 
+    if (!f) {
+        println("Failed to read file %c", file_name);
+        return NULL;
+    }
+
     fseek(f, 0, SEEK_END);
     *size = ftell(f);
     fseek(f, 0, SEEK_SET);
 
-    char *ret = malloc(*size);
+    char *ret = (char*)malloc(*size + 16);
     fread(ret, 1, *size, f);
 
     fclose(f);
@@ -871,7 +889,7 @@ inline static u8* file_read_bytes(const char *file_name, u64 *size) {
     *size = ftell(f);
     fseek(f, 0, SEEK_SET);
 
-    u8 *ret = malloc(*size);
+    u8 *ret = (u8*)malloc(*size);
     fread(ret, 1, *size, f);
 
     fclose(f);
@@ -884,7 +902,7 @@ inline static u64 file_write_bytes(const char *file_name, u8 *buffer, u64 count)
     return ret;
 }
 
-#if __cplusplus
+#ifdef __cplusplus
 } // extern "C"
 #endif
 
@@ -1220,6 +1238,7 @@ void string_format_backend(char *format_buffer, const char *fmt, va_list args) {
 }
 
 
+#ifndef __cplusplus
                     /* BEGIN HASH MAP IMPLEMENTATION */
 bool fn_hash_map_insert_hash(Hash_Map *map, u64 hash, void *elem, int elem_width) {
     int g_idx = (hash & (map->cap - 1));
@@ -1374,8 +1393,11 @@ void* fn_hash_map_delete_hash(Hash_Map *map, u64 hash) {
     return NULL;
 }
 
-#if __cplusplus
+#endif // implementation guard
+#endif // ifndef cpp
+
+#endif // include guard
+
+#ifdef __cplusplus
 } // extern "C"
 #endif
-#endif // implementation guard
-#endif // include guard
