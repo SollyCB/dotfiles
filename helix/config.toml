@@ -1,0 +1,44 @@
+theme = "sol_autumn"
+
+[editor]
+auto-pairs = false
+
+[editor.lsp]
+enable = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.soft-wrap]
+enable = false
+
+[editor.gutters]
+layout = ["spacer"]
+
+[keys.normal]
+X   = ["extend_line_up", "extend_to_line_bounds"]
+C-x = "extend_to_line_bounds"
+
+C-k = "kill_to_line_end"
+C-K = "kill_to_line_start"
+
+C-p = ":clipboard-paste-after"
+C-P = ":clipboard-paste-before"
+
+u = "undo"
+U = "redo"
+
+[keys.select]
+X   = ["extend_line_up", "extend_to_line_bounds"]
+C-x = "extend_to_line_bounds"
+U   = "switch_to_uppercase"
+u   = "switch_to_lowercase"
+
+[keys.normal.space]
+f   = "file_picker_in_current_directory"
+"[" = ":lsp-stop"
+"]" = ":lsp-restart"
+u   = "switch_to_lowercase"
+U   = "switch_to_uppercase"
