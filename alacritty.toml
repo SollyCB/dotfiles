@@ -31,10 +31,15 @@ startup_mode = "Windowed"
 decorations_theme_variant = "Dark"
 
 [font]
-size = 11.5
-normal = { family = "Consolas", style = "Term" }
-bold   = { family = "Consolas", style = "Bold"    }
-italic = { family = "Consolas", style = "Italic"  }
+# size = 11.5
+# normal = { family = "Consolas", style = "Term" }
+# bold   = { family = "Consolas", style = "Bold"    }
+# italic = { family = "Consolas", style = "Italic"  }
+
+size = 12.0
+normal = { family = "Iosevka", style = "Term" }
+bold   = { family = "Iosevka", style = "Bold"    }
+italic = { family = "Iosevka", style = "Italic"  }
 
 [env]
 TERM = "xterm-256color"
