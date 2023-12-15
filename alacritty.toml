@@ -1,0 +1,44 @@
+# Default colors
+[colors.primary]
+background = '#191919'
+foreground = '#F3F2CC'
+
+# Normal colors
+[colors.normal]
+black   = '#3F3F3F'
+red     = '#F05E48'
+green   = '#99be70'
+yellow  = '#DFAF8F'
+blue    = '#FAD566'
+magenta = '#72a59e'
+cyan    = '#8CD0D3'
+white   = '#DCDCCC'
+
+# Bright colors
+[colors.bright]
+black   = '#709080'
+red     = '#DCA3A3'
+green   = '#72D5A3'
+yellow  = '#F0DFAF'
+blue    = '#94BFF3'
+magenta = '#EC93D3'
+cyan    = '#93E0E3'
+white   = '#FFFFFF'
+
+[window]
+decorations = "Full"
+startup_mode = "Windowed"
+decorations_theme_variant = "Dark"
+
+[font]
+size = 11.5
+normal = { family = "Consolas", style = "Term" }
+bold   = { family = "Consolas", style = "Bold"    }
+italic = { family = "Consolas", style = "Italic"  }
+
+[env]
+TERM = "xterm-256color"
+
+# [colors.primary]
+# background = "#191919"
+# # background = "#000000"
