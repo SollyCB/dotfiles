@@ -1,3 +1,8 @@
+command Splash :e ~/.config/dotfiles/splash.vim
+command Autocmd :e ~/.config/dotfiles/autocmd.vim
+command Funcs :e ~/.config/dotfiles/funcs.vim
+command Vimrc :e ~/.config/dotfiles/.vimrc
+
 " prgs
 set grepprg=rg\ --vimgrep
 
@@ -6,9 +11,7 @@ syntax on
 set termguicolors
 set background=dark
 
-colo pencil
-
-if g:colors_name == "default"
+if !exists("g:colors_name") || g:colors_name == "default"
     hi Visual guibg=darkblue
 endif
 

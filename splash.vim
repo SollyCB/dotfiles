@@ -17,7 +17,7 @@ fun! Start()
     \ norelativenumber
 
   " Our message goes here. Mine is simple.
-  exec ":r splash_message.txt"
+  exec ":silent! r /home/solly/.config/dotfiles/splash_message.txt"
 
   " When we are done writing out message set the buffer to readonly.
   setlocal

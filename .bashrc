@@ -1,5 +1,8 @@
 ######## BEGIN CUSTOM CONFIG ######
 
+# vim
+alias vi=nvim
+
 # 4coder
 alias e='/home/solly/4ed/build-stable/4ed &'
 alias ed='/home/solly/4ed/build/4ed &'

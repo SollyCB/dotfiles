@@ -1,4 +1,28 @@
-set nocompatible
+if has('nvim')
+
+    set nocompatible
+
+    " dont flood with my dirs with shit
+    set undofile
+    set undodir=/tmp//
+    set backupdir=/tmp//
+    set directory=/tmp//
+
+    " tmux colors
+    set t_8f=[38;2;%lu;%lu;%lum
+    set t_8b=[48;2;%lu;%lu;%lum
+
+    " fix ctrl and shift left and right arrow keys
+    map <ESC>[1;5D <c-left>
+    map! <ESC>[1;5D <c-left>
+    map <ESC>[1;5C <c-right>
+    map! <ESC>[1;5C <c-right>
+    map <ESC>[1;2D <s-left>
+    map! <ESC>[1;2D <s-left>
+    map <ESC>[1;2C <s-right>
+    map! <ESC>[1;2C <s-right>
+
+endif
 
 " retarded bell
 set belloff=all
@@ -16,14 +40,8 @@ set ignorecase
 set smartcase
 set nowrap
 
-" dont flood with my dirs with shit
-set undofile
-set undodir=/tmp//
-set backupdir=/tmp//
-set directory=/tmp//
-
 " cursor static
-set guicursor+=a:hor30
+set guicursor+=a:block
 set guicursor+=a:blinkoff0
 
 set incsearch
@@ -35,22 +53,8 @@ set cinkeys=0{,0},0),:,!^F,o,O,e
 " mouse
 set mouse=a
 
-" tmux colors
-set t_8f=[38;2;%lu;%lu;%lum
-set t_8b=[48;2;%lu;%lu;%lum
-
-" fix ctrl and shift left and right arrow keys
-map <ESC>[1;5D <c-left>
-map! <ESC>[1;5D <c-left>
-map <ESC>[1;5C <c-right>
-map! <ESC>[1;5C <c-right>
-map <ESC>[1;2D <s-left>
-map! <ESC>[1;2D <s-left>
-map <ESC>[1;2C <s-right>
-map! <ESC>[1;2C <s-right>
-
-" open/save .vimrc
-nnoremap <leader>ev :vs ~/.config/vim/config.vim<cr>
+" open/save config
+nnoremap <leader>ev :vs ~/.config/dotfiles/config.vim<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 source ~/.config/dotfiles/splash.vim
