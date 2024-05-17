@@ -1,3 +1,4 @@
+command Netrw :e ~/.config/dotfiles/netrw.vim
 command Splash :e ~/.config/dotfiles/splash.vim
 command Autocmd :e ~/.config/dotfiles/autocmd.vim
 command Funcs :e ~/.config/dotfiles/funcs.vim
@@ -39,6 +40,9 @@ nnoremap <Tab>6 :tabnext 6<cr>
 nnoremap <Tab>7 :tabnext 7<cr>
 nnoremap <Tab>8 :tabnext 8<cr>
 nnoremap <Tab>9 :tabnext 9<cr>
+
+" list dir
+nnoremap <leader>e. :e .<cr>
 
 " no hlsearch until next search
 nnoremap <c-l> :noh<cr>

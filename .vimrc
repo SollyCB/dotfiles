@@ -57,6 +57,7 @@ set mouse=a
 nnoremap <leader>ev :vs ~/.config/dotfiles/config.vim<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+source ~/.config/dotfiles/netrw.vim
 source ~/.config/dotfiles/splash.vim
 source ~/.config/dotfiles/autocmd.vim
 source ~/.config/dotfiles/funcs.vim

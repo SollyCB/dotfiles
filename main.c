@@ -1,0 +1,4 @@
+#include "file"
+
+int main() {
+}

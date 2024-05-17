@@ -1,0 +1,1 @@
+TODO: Make a script to setup all the symbolic links so I do not have to do it manually if I ever have to reinstall or move machine or whatever
