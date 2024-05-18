@@ -1,4 +1,4 @@
-if has('nvim')
+if !has('nvim')
 
     set nocompatible
 
@@ -55,6 +55,7 @@ set mouse=a
 
 " open/save config
 nnoremap <leader>ev :vs ~/.config/dotfiles/config.vim<cr>
+nnoremap <leader>el :vs ~/.config/dotfiles/config.lua<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 source ~/.config/dotfiles/netrw.vim
@@ -62,3 +63,5 @@ source ~/.config/dotfiles/splash.vim
 source ~/.config/dotfiles/autocmd.vim
 source ~/.config/dotfiles/funcs.vim
 source ~/.config/dotfiles/config.vim
+
+lua require('config')

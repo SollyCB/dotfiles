@@ -19,22 +19,3 @@ function BuildGlsl()
     call Build("bash /home/solly/scripts/shader_comp.sh " . expand("%"))
 endfunction
 
-function FindTypeDeclUnderCursor()
-    let l:cw = expand("<cword>")
-    let l:exp = 'rg --vimgrep "} ' . cw . ';|struct ' . cw . ' \{"'
-    cgete system(exp)
-endfunction
-
-function FindTypeRefsUnderCursor()
-    let l:cw = expand("<cword>")
-    let l:exp = 'rg --vimgrep "^ *' . cw . '[ \n]+[\w\*]|^ *struct ' . cw . '[ \n]+[\w\*]"'
-    cgete system(exp)
-endfunction
-
-function FindFuncRefsUnderCursor()
-    let l:cw = expand("<cword>")
-    let l:exp = 'rg --vimgrep "' . cw . '[ \n]*\("'
-    echo exp
-    cgete system(exp)
-endfunction
-

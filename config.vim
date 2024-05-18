@@ -10,17 +10,21 @@ set grepprg=rg\ --vimgrep
 " theme
 syntax on
 set termguicolors
-set background=dark
 
-if !exists("g:colors_name") || g:colors_name == "default"
-    hi Visual guibg=darkblue
+if $NIGHT
+    colo foot
+else
+    colo stb
 endif
 
+" lsp docs highlight underscores without this...
+hi clear Error
+
 " system register
-nnoremap <c-p> "+p
-nnoremap <c-y> "+y
-vnoremap <c-p> "+p
-vnoremap <c-y> "+y
+nnoremap <leader>p "+p
+nnoremap <leader>y "+y
+vnoremap <leader>p "+p
+vnoremap <leader>y "+y
 
 " tabs
 nnoremap <Tab>e :tabe<space>
@@ -71,12 +75,7 @@ nnoremap <leader>vkd oDEBUG_VK_OBJ_CREATION(, check);<esc>8hi
 " dont type copen
 nnoremap <F2> :copen<cr>
 
-" nnoremap <leader>q :cget system("qc " . expand("% && ./qc"))<cr>
 nnoremap <leader>q :call QuickCompile()<cr>
-nnoremap <leader>n :cn<cr>
-nnoremap <leader>p :cp<cr>
-
-nnoremap <leader>T :call FindTypeDeclUnderCursor()<cr>
-nnoremap <leader>t :call FindTypeRefsUnderCursor()<cr>
-nnoremap <leader>f :call FindFuncRefsUnderCursor()<cr>
+nnoremap <c-n> :cn<cr>
+nnoremap <c-p> :cp<cr>
 

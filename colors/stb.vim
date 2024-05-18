@@ -20,7 +20,6 @@ hi ModeMsg guifg=black
 hi MoreMsg guifg=black
 
 hi Todo      guifg=black guibg=#f0f0f0
-hi Cursor    guifg=black guibg=#f0f0f0
 hi title     guifg=black
 hi NonText   guifg=lightgrey
 
@@ -35,5 +34,4 @@ hi TabLineFill guibg=grey    guifg=grey
 hi TabLine     guibg=grey    gui=none
 hi TabLineSel  guibg=#f0f0f0 guifg=black gui=bold
 
-hi Visual guifg=#f0f0f0 guibg=black
-
+hi Visual guifg=black guibg=lightgrey

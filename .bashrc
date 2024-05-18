@@ -1,7 +1,14 @@
 ######## BEGIN CUSTOM CONFIG ######
 
+# theme.sh one-half-black
+
+alias newterm="sudo update-alternatives --config x-terminal-emulator"
+
 # vim
 alias vi=nvim
+export NIGHT=$(cat /home/solly/scripts/night.opt)
+alias night='export NIGHT=1; echo 1 > /home/solly/scripts/night.opt'
+alias day='export NIGHT=0; echo 0 > /home/solly/scripts/night.opt'
 
 # 4coder
 alias e='/home/solly/4ed/build-stable/4ed &'
