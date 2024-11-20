@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: [-xc, -Wall, -Wextra, -Werror, -Wno-self-assign, -Wno-unused-parameter, -Wno-unused-function, -msse2, -DSOL_DEF, -DDEBUG]
+  Compiler: gcc
+
+SemanticTokens:
+  DisabledKinds: [InactiveCode]
