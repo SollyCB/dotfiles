@@ -1,5 +1,5 @@
 CompileFlags:
-  Add: [-xc, -Wall, -Wextra, -Werror, -Wno-self-assign, -Wno-unused-parameter, -Wno-unused-function, -msse2, -DSOL_DEF, -DDEBUG]
+  Add: [-xc, -Wall, -Wextra, -Werror, -Wno-self-assign, -Wshadow, -Wno-missing-field-initializers, -msse2, -mfsgsbase, -DSOL_DEF, -DDEBUG]
   Compiler: gcc
 
 SemanticTokens:

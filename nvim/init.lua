@@ -2,11 +2,12 @@ vim.g.mapleader = ' '
 vim.g.localmapleader = ' '
 
 -- Opts
-vim.opt.expandtab = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
+vim.cmd("set grepprg=rg\\ --vimgrep\\ ");
 
-vim.opt.grepprg = 'rg\\ --vimgrep'
+vim.opt.expandtab  = true
+vim.opt.tabstop    = 4
+vim.opt.shiftwidth = 4
+
 vim.opt.makeprg = './build.sh'
 
 vim.opt.guicursor = ""
@@ -20,54 +21,59 @@ vim.opt.splitright = true
 vim.opt.splitbelow = false
 
 vim.opt.list = true
-vim.opt.listchars = { trail = '·', nbsp = '␣' }
+vim.opt.listchars = { trail = '·', nbsp = '␣', tab = '  '}
 vim.opt.inccommand = 'split'
 
 -- Binds
-nmap = function(map, out, desc)
-  vim.keymap.set('n', map, out, desc)
-end
+Map = {
 
-imap = function(map, out, desc)
-  vim.keymap.set('i', map, out, desc)
-end
+  n = function(map, out, desc)
+    vim.keymap.set('n', map, out, desc)
+  end,
 
-vmap = function(map, out, desc)
-  vim.keymap.set('v', map, out, desc)
-end
+  i = function(map, out, desc)
+    vim.keymap.set('i', map, out, desc)
+  end,
 
-nmap('<Esc>', '<cmd>nohlsearch<CR>')
+  v = function(map, out, desc)
+    vim.keymap.set('v', map, out, desc)
+  end,
 
-nmap('<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-nmap('<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-nmap('<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-nmap('<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+}
 
-nmap('>', '>>', {})
-nmap('<', '<<', {})
+Map.n('<Esc>', '<cmd>nohlsearch<CR>')
 
-imap('<M-c>', '// scb :- '            , {desc = 'Write regular comment'})
-imap('<M-s>', '// Suggestion(scb): ', {desc = 'Write SUGGESTION comment'})
-imap('<M-t>', '// Todo(scb): '      , {desc = 'Write TODO comment'})
-imap('<M-e>', '// Experiment(scb): ', {desc = 'Write EXPERIMENT comment'})
-imap('<M-n>', '// Note(scb): '      , {desc = 'Write NOTE comment'})
-imap('<M-b>', '// Bug(scb): '       , {desc = 'Write BUG comment'})
-imap('<M-h>', '// hack(scb): '      , {desc = 'Write HACK comment'})
+Map.n('<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+Map.n('<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+Map.n('<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+Map.n('<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+Map.n('>', '>>', {})
+Map.n('<', '<<', {})
+
+Map.i('<M-c>', '// scb :- '          , {desc = 'Write regular comment'})
+Map.i('<M-s>', '// Suggestion(scb): ', {desc = 'Write SUGGESTION comment'})
+Map.i('<M-t>', '// Todo(scb): '      , {desc = 'Write TODO comment'})
+Map.i('<M-e>', '// Experiment(scb): ', {desc = 'Write EXPERIMENT comment'})
+Map.i('<M-n>', '// Note(scb): '      , {desc = 'Write NOTE comment'})
+Map.i('<M-b>', '// Bug(scb): '       , {desc = 'Write BUG comment'})
+Map.i('<M-h>', '// hack(scb): '      , {desc = 'Write HACK comment'})
 
 local paste_date = function()
   local date = os.date('*t')
   local string = string.format("%d-%d-%d", date.day, date.month, date.year);
   vim.api.nvim_paste(string, false, -1)
 end
-imap('<M-d>', paste_date, {desc = 'Write date into buffer as dd-mm-yy'});
 
-nmap('-', 'zt')
-nmap('_', 'zb')
-nmap('=', 'zz')
+Map.i('<M-d>', paste_date, {desc = 'Write date into buffer as dd-mm-yy'});
 
-nmap('/', '/\\V')
+Map.n('-', 'zt')
+Map.n('_', 'zb')
+Map.n('=', 'zz')
 
-nmap('<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+Map.n('/', '/\\V')
+
+Map.n('<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Open file in last place
 local last_place_ignore_buftype = { "quickfix", "nofile", "help" }
