@@ -484,7 +484,7 @@ require("lazy").setup({
     "LazyVim/LazyVim",
 
     opts = {
-      colorscheme = "default",
+      colorscheme = "sol",
     },
   },
 
