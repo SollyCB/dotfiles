@@ -11,9 +11,6 @@ PS1='[\u@\h \W]\$ '
 
 ############### BEGIN CUSTOM CONFIG ###############
 
-# work
-~/code/spectral-general/setup_env.sh
-
 # git
 export GPG_TTY=$(tty)
 

@@ -1,0 +1,6 @@
+CompileFlags:
+  Add: [-Wall, -Wextra, -Werror, -Wno-self-assign, -Wshadow, -Wno-missing-field-initializers, -msse2, -mfsgsbase, -DSOL_DEF, -DDEBUG]
+  Compiler: gcc
+
+SemanticTokens:
+  DisabledKinds: [InactiveCode]
