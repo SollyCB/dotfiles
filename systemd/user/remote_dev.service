@@ -1,0 +1,11 @@
+[Unit]
+Description=Setup remote env
+After=systemd-networkd-wait-online.service systemd-resolved.service
+
+[Service]
+Type=simple
+ExecStart=/home/solly/sc/env/setup_env.sh
+User=solly
+
+[Install]
+WantedBy=multi-user.target

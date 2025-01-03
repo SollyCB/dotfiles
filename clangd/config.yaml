@@ -1,0 +1,7 @@
+CompileFlags:
+  Add: [-std=c++23]
+  CompilationDatabase: /home/solly/sc/build/llvm
+
+Diagnostics:
+  ClangTidy:
+    Remove: [readability-identifier-naming, llvm-qualified-auto]

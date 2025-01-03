@@ -1,4 +1,26 @@
-theme = "sol_dark"
+theme = "sol_aut"
 
 [editor.gutters]
-layout = ["diff"]
+layout = []
+
+[keys.normal]
+D = "kill_to_line_end"
+
+X = ["extend_line_up", "extend_to_line_bounds"]
+C-x = "extend_to_line_bounds"
+
+0 = "goto_line_start"
+"$" = "goto_line_end"
+
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+
+[keys.select]
+X = ["extend_line_up", "extend_to_line_bounds"]
+C-x = "extend_to_line_bounds"
+
+0 = "goto_line_start"
+"$" = "goto_line_end"
+
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"

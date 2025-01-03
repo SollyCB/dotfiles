@@ -1,0 +1,13 @@
+[language-server.clangd]
+command = "/bin/clangd"
+args = ["--compile-commands-dir=/home/solly/sc/build/llvm/"]
+
+[language-server.clangd.config]
+flags = ["--query-driver=/home/solly/code/sc/llvm/bin/clang++", "-std=c++23", "-I/home/solly/code/sc/llvm/include", "-Wall", "-Wextra", "-Werror", "-Wno-unused-parameter"]
+compiler = "/home/solly/sc/llvm/bin/clang++"
+
+[[language]]
+name = "cpp"
+language-servers = ["clangd"]
+auto-format = false
+indent = { unit = "    ", tab-width = 1}
